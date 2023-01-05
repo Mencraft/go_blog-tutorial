@@ -23,6 +23,13 @@ func main() {
 	postRoute := routes.NewPostRoute(postController, router)    // post routes are initialized
 	postRoute.Setup()                                           // post routes are being setup
 
+	// add up these
+	userRepository := repository.NewUserRepository(db)
+	userService := service.NewUserService(userRepository)
+	userController := controller.NewUserController(userService)
+	userRoute := routes.NewUserRoute(userController, router)
+	userRoute.Setup()
+
 	db.DB.AutoMigrate(&models.Post{}) // migrating Post model to datbase table
 	router.Gin.Run(":8000")           //server started on 8000 port
 }
